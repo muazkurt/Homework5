@@ -62,7 +62,12 @@ char *sfrac_negate(char *n)
 {
 	char *m;
 	m[0] = '-';
-	return strcpy(n, strcpy(&m[1], n));
+	if (n[0] == '-')
+		return strcpy(n, strcpy(&m[1], n));
+	m[0] = '+';
+	else
+		return strcpy(n, strcpy(&m[1], n));
+	return n;
 }
 
 char *sfrac_mult(char *n1, char *n2)
@@ -95,7 +100,8 @@ char *sfrac_div(char *n1, char *n2)
 
 char *sfrac_fromdouble(double x)
 {
-	char* n;
+	char *n;
+	char *changer;
 	int i = 0, a, j;
 	for (a = (int)x; a > 9; a / 10)
 	{
@@ -108,11 +114,19 @@ char *sfrac_fromdouble(double x)
 		n[j] = a;
 		--i;
 	}
-	for (i = 0; i < 8; ++i)
-		
+	a = x - (int)x;
+	a *= power(10, 8);
+	if (a == 0)
+		strcat(n, "1");
 	
+	else
+	{
+		for(i=0;a % 10 == 0;i++)
+			a /= 10;
 
-	return n1;
+		
+	}
+	return n;
 }
 
 double sfrac_todouble(char *x)
