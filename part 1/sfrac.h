@@ -9,10 +9,26 @@ int power(int i, int y)
 }
 
 
-void sfrac_simplify(char *n)
+char *sfrac_simplify(char *n)
 {
-
-	return;
+	int x, y, i;
+	x = sfrac_todouble(strtok(n, "/");
+	y = sfrac_todouble(strtok(NULL, "/");
+	for (i = 1; i < x && i < y; ++i)
+	{
+		if (x % i == 0 && y % i == 0)
+		{
+			x /= i;
+			y /= i;
+		}
+	}
+	/*
+	
+	strcat(strcat(strcpy(n,sfrac_fromdouble(x)),'/'),sfrac_fromdouble(y))
+	*/
+	
+	
+	return strcat(strcat(strcpy(n, x), '/'), y);
 }
 
 char *sfrac_add(char *n1, char *n2)
@@ -79,6 +95,21 @@ char *sfrac_div(char *n1, char *n2)
 
 char *sfrac_fromdouble(double x)
 {
+	char* n;
+	int i = 0, a, j;
+	for (a = (int)x; a > 9; a / 10)
+	{
+		n[i++] = a % 10;
+	}
+	for (j = 0; j < i; ++j)
+	{
+		a = n[i];
+		n[i] = n[j];
+		n[j] = a;
+		--i;
+	}
+	for (i = 0; i < 8; ++i)
+		
 	
 
 	return n1;
@@ -87,12 +118,25 @@ char *sfrac_fromdouble(double x)
 double sfrac_todouble(char *x)
 {
 	double upper = 0, downer = 0, i;
-	for (i = 0; x[i] != 0 && x[i] != '/'; ++i)
+
+	char* changes;
+	changes = strtok(x, "/");
+	for (i = 0; i < strlen(changes); ++i)
 		value = (value * 10) + (int)(x[i] - '0');
-	for (i; x[i] != 0; ++i)
-		downer = (downer * 10) + (int)(x[i] - '0');
-	if (downer > 0)
-		return value / downer;
+	changes = strtok(NULL, "/");
+
+	if (strlen(changes) == 0)
+		return value;
+
+
+	else
+	{
+		for (i = 0; i < strlen(changes); ++i)
+			downer = (downer * 10) + (int)(x[i] - '0');
+		if (downer > 0)
+			return value / downer;
+	}
+
 	return NaN;
 }
 
