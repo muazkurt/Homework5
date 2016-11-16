@@ -1,4 +1,13 @@
 #pragma once
+int power(int i, int y)
+{
+	int x, total = 1;
+	for (x = 0; x < y; ++x)
+		total *= i;
+	return total;
+}
+
+
 void sfrac_simplify(char *n)
 {
 
@@ -7,8 +16,10 @@ void sfrac_simplify(char *n)
 
 char *sfrac_add(char *n1, char *n2)
 {
-
-
+	double x, y;
+	x = sfrac_todouble(n1);
+	y = sfrac_todouble(n2);
+	x += y;
 	return n1;
 }
 
@@ -41,15 +52,21 @@ char *sfrac_div(char *n1, char *n2)
 
 char *sfrac_fromdouble(double x)
 {
-
+	
 
 	return n1;
 }
 
 double sfrac_todouble(char *x)
 {
-
-	return 0.0;
+	double upper = 0, downer = 0, i;
+	for (i = 0; x[i] != 0 && x[i] != '/'; ++i)
+		value = (value * 10) + (int)(x[i] - '0');
+	for (i; x[i] != 0; ++i)
+		downer = (downer * 10) + (int)(x[i] - '0');
+	if (downer > 0)
+		return value / downer;
+	return NaN;
 }
 
 void sfrac_print(
