@@ -1,4 +1,5 @@
 #pragma once
+#include <string.h>
 int power(int i, int y)
 {
 	int x, total = 1;
@@ -20,32 +21,58 @@ char *sfrac_add(char *n1, char *n2)
 	x = sfrac_todouble(n1);
 	y = sfrac_todouble(n2);
 	x += y;
+	/*
+	char çevirip return etme kýsmý
+	
+	*/
+	
 	return n1;
 }
 
 char *sfrac_sub(char *n1, char *n2)
 {
+	double x, y;
+	x = sfrac_todouble(n1);
+	y = sfrac_todouble(n2);
+	x -= y;
+	/*
+	char çevirip return etme kýsmý
 
+	*/
 	return n1;
 }
 
 char *sfrac_negate(char *n)
 {
-
-
-	return n;
+	char *m;
+	m[0] = '-';
+	return strcpy(n, strcpy(&m[1], n));
 }
 
 char *sfrac_mult(char *n1, char *n2)
 {
+	double x, y;
+	x = sfrac_todouble(n1);
+	y = sfrac_todouble(n2);
+	x *= y;
+	/*
+	char çevirip return etme kýsmý
 
+	*/
 
 	return n1;
 }
 
 char *sfrac_div(char *n1, char *n2)
 {
+	double x, y;
+	x = sfrac_todouble(n1);
+	y = sfrac_todouble(n2);
+	x /= y;
+	/*
+	char çevirip return etme kýsmý
 
+	*/
 
 	return n1;
 }
