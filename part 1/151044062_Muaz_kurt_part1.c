@@ -1,32 +1,61 @@
 #include <stdio.h>
 #include <string.h>	
+#include <math.h>
+#define MaxPowerer 8
 
-
-double sfrac_todouble(char *x)
+char *sfrac_fromdouble(double x)
 {
-	double upper = 0, downer = 0, i;
+	char *n;
+	int i = 0, a, j, fortop, q;
+	n[i++] = "_";
 	
-	if (strlen(x) == strlen(strtok(x,"/")))
-	{ 
-		sscanf(x, "%lf", &upper);
-		return upper;
+	for (a = (int)x; a > 9; a /= 10)
+	{	
+		printf("%d", a);
+		n[i++] = a % 10;
 	}
-
-	sscanf(x, "%lf", &upper);
 	
-	sscanf(strtok(NULL, "/"), "%lf", &downer);
+	for (j = 0; j < i; ++j)
+	{
+		a = n[i];
+		n[i] = n[j];
+		n[j] = a;
+		--i;
+	}
+	a = x - (int)x;
+	a *= pow(10, MaxPowerer);
+	if (a == 0)
+		strcat(n, "1");
 
-	if (downer!=0)
-		return upper / downer;
-	
+	else
+	{
+		for (i = 0; a % 10 == 0; i++)
+			a /= 10;
+		i = MaxPowerer - i;
+		q = pow(10, MaxPowerer);
+		for (j = 0; a % 5 == 0 && (int)x % 5 == 2 && j < i; j++)
+		{
+			a /= 5;
+			x /= 5;
+			q /= 5;
+		}
+		for (fortop = 0; a % 2 == 0 && (int)x % 2 == 0 && fortop < i; ++fortop)
+		{
+			a /= 2;
+			x /= 2;
+			q /= 2;
+		}
+		//	strcat(strcat(n, n/*("%d", a)*/), ("/10^%d", (MaxPowerer - i)));
 
+	}
+	strtok(n, "_");
 
-	return -1;
+	return strtok(NULL, "_");
 }
 void main()
 {
 	double c;
-	c = sfrac_todouble("123456789/1234567890");
-	printf("%3.5f", c);
+	c = 1/3;
+	printf("%s", sfrac_fromdouble(c));
 	return;
 }
