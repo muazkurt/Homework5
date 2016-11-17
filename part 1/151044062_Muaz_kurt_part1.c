@@ -7,6 +7,7 @@
 void main()
 {
 	char *c = "8/4";
+	printf("%s", sfrac_negate(c));
 	sfrac_simplify(c);
 	return;
 }
