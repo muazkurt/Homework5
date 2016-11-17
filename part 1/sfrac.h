@@ -53,6 +53,71 @@ double sfrac_todouble(char *x)
 	return -1;
 }
 
+char *sfrac_fromdouble(double x)
+{
+	char *n;
+	int i = 0, pre, a, j, fortop, q;
+	n[i++] = "_";
+
+
+	a = x - (int)x;
+	a *= pow(10, MaxPowerer);
+	if (a == 0)
+	{
+		strcat(n, "/1");
+		for (pre = (int)x; pre > 9; pre /= 10)
+		{
+			printf("%d", pre);
+			n[i++] = pre % 10;
+		}
+
+		for (j = 0; j < i; ++j)
+		{
+			pre = n[i];
+			n[i] = n[j];
+			n[j] = pre;
+			--i;
+		}
+		sfrac_simplify(x);
+	}
+	else
+	{
+		for (i = 0; a % 10 == 0; i++)
+			a /= 10;
+		i = MaxPowerer - i;
+		q = pow(10, MaxPowerer);
+		for (j = 0; a % 5 == 0 && (int)x % 5 == 2 && j < i; j++)
+		{
+			a /= 5;
+			x /= 5;
+			q /= 5;
+		}
+		for (fortop = 0; a % 2 == 0 && (int)x % 2 == 0 && fortop < i; ++fortop)
+		{
+			a /= 2;
+			x /= 2;
+			q /= 2;
+		}
+		for (pre = (int)x; pre > 9; pre /= 10)
+		{
+			printf("%d", pre);
+			n[i++] = pre % 10;
+		}
+
+		for (j = 0; j < i; ++j)
+		{
+			pre = n[i];
+			n[i] = n[j];
+			n[j] = pre;
+			--i;
+		}
+		//	strcat(strcat(n, n/*("%d", a)*/), ("/10^%d", (MaxPowerer - i)));
+
+	}
+	strtok(n, "_");
+
+	return strtok(NULL, "_");
+}
 
 char *sfrac_simplify(char *n)
 {
@@ -72,6 +137,9 @@ char *sfrac_negate(char *n)
 	return strcat(m, n);
 }
 
+
+
+//dört iþlem
 char *sfrac_add(char *n1, char *n2)
 {
 	double x, y;
@@ -92,9 +160,16 @@ char *sfrac_sub(char *n1, char *n2)
 	x = sfrac_todouble(sfrac_simplify(n1));
 	y = sfrac_todouble(sfrac_simplify(n2));
 	if (x > y)
+	{
 		x -= y;
+		/*
+		n1=sfrac_fromdouble(x);
+		*/
+		sfrac_simplify(n1);
+	}
 	else
 	{
+		x -= y;
 		/*
 		n1=sfrac_fromdouble(x);
 		*/
@@ -104,8 +179,6 @@ char *sfrac_sub(char *n1, char *n2)
 
 	return n1;
 }
-
-
 
 char *sfrac_mult(char *n1, char *n2)
 {
@@ -132,73 +205,9 @@ char *sfrac_div(char *n1, char *n2)
 	sfrac_simplify(n1);
 	return n1;
 }
+//dört iþlem sonu
 
-//
-//char *sfrac_fromdouble(double x)
-//{
-//	char *n;
-//	int i = 0, pre, a, j, fortop, q;
-//	n[i++] = "_";
-//
-//
-//	a = x - (int)x;
-//	a *= pow(10, MaxPowerer);
-//	if (a == 0)
-//	{
-//		strcat(n, "/1");
-//		for (pre = (int)x; pre > 9; pre /= 10)
-//		{
-//			printf("%d", pre);
-//			n[i++] = pre % 10;
-//		}
-//
-//		for (j = 0; j < i; ++j)
-//		{
-//			pre = n[i];
-//			n[i] = n[j];
-//			n[j] = pre;
-//			--i;
-//		}
-//		sfrac_simplify(x);
-//	}
-//	else
-//	{
-//		for (i = 0; a % 10 == 0; i++)
-//			a /= 10;
-//		i = MaxPowerer - i;
-//		q = pow(10, MaxPowerer);
-//		for (j = 0; a % 5 == 0 && (int)x % 5 == 2 && j < i; j++)
-//		{
-//			a /= 5;
-//			x /= 5;
-//			q /= 5;
-//		}
-//		for (fortop = 0; a % 2 == 0 && (int)x % 2 == 0 && fortop < i; ++fortop)
-//		{
-//			a /= 2;
-//			x /= 2;
-//			q /= 2;
-//		}
-//		for (pre = (int)x; pre > 9; pre /= 10)
-//		{
-//			printf("%d", pre);
-//			n[i++] = pre % 10;
-//		}
-//
-//		for (j = 0; j < i; ++j)
-//		{
-//			pre = n[i];
-//			n[i] = n[j];
-//			n[j] = pre;
-//			--i;
-//		}
-//		//	strcat(strcat(n, n/*("%d", a)*/), ("/10^%d", (MaxPowerer - i)));
-//
-//	}
-//	strtok(n, "_");
-//
-//	return strtok(NULL, "_");
-//}
+
 //
 //
 //
