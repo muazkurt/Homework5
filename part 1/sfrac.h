@@ -27,8 +27,28 @@ void simplifier(int *first, int *sec)
 	return;
 }
 
+char *vritingInsideSTR(char* str, int x)
+{
+	int i = 0, j = 0;
+	char *tutucu = "\0";
+	for (x; x > 9; x /= 10)
+		str[i++] = x % 10;
+	str[i] = 0;
+	for (i -= 1; i > 0; --i)
+		tutucu[j++] = str[i];
+	tutucu[j] = 0;
+	return strcpy(str,tutucu);
+}
 
-
+int shotZeroes(int *x)
+{
+	int i;
+	if (*x == 0)
+		return 8;
+	for (i = 0; *x % 10 == 0; ++i)
+		*x /= 10;
+	return 8 - i;
+}
 //my own functions end
 
 
@@ -53,80 +73,29 @@ double sfrac_todouble(char *x)
 	return -1;
 }
 
-char *sfrac_fromdouble(double x)
+char *sfrac_fromdouble(double x, char* firstInside)
 {
-	char *n;
-	int i = 0, pre, a, j, fortop, q;
-	n[i++] = "_";
+	int firstTim = (int)x,
+		i,
+		sectim = (x - (int)x)*power(10, MaxPowerer);
+	vritingInsideSTR(firstInside, firstTim);
+	i=shotZeroes(&sectim);
+	vritingInsideSTR(&firstInside[strlen(firstInside)], sectim);
+	strcat(firstInside, "/1");
+	for (i; i > 0; --i)
+		strcat(firstInside, "0");
 
-
-	a = x - (int)x;
-	a *= pow(10, MaxPowerer);
-	if (a == 0)
-	{
-		strcat(n, "/1");
-		for (pre = (int)x; pre > 9; pre /= 10)
-		{
-			printf("%d", pre);
-			n[i++] = pre % 10;
-		}
-
-		for (j = 0; j < i; ++j)
-		{
-			pre = n[i];
-			n[i] = n[j];
-			n[j] = pre;
-			--i;
-		}
-		sfrac_simplify(x);
-	}
-	else
-	{
-		for (i = 0; a % 10 == 0; i++)
-			a /= 10;
-		i = MaxPowerer - i;
-		q = pow(10, MaxPowerer);
-		for (j = 0; a % 5 == 0 && (int)x % 5 == 2 && j < i; j++)
-		{
-			a /= 5;
-			x /= 5;
-			q /= 5;
-		}
-		for (fortop = 0; a % 2 == 0 && (int)x % 2 == 0 && fortop < i; ++fortop)
-		{
-			a /= 2;
-			x /= 2;
-			q /= 2;
-		}
-		for (pre = (int)x; pre > 9; pre /= 10)
-		{
-			printf("%d", pre);
-			n[i++] = pre % 10;
-		}
-
-		for (j = 0; j < i; ++j)
-		{
-			pre = n[i];
-			n[i] = n[j];
-			n[j] = pre;
-			--i;
-		}
-		//	strcat(strcat(n, n/*("%d", a)*/), ("/10^%d", (MaxPowerer - i)));
-
-	}
-	strtok(n, "_");
-
-	return strtok(NULL, "_");
+	return firstInside;
 }
 
 char *sfrac_simplify(char *n)
 {
-	int x, y, i, lessone;
+	int x, y;
 	sscanf(n, "%d/%d", &x, &y);
 	simplifier(&x, &y);
 
-	//update n with sfrac_fromdouble(x,y) vsvs
-
+	strcat(sfrac_fromdouble(x, n), "/");
+	sfrac_fromdouble(y, &n[strlen(n + 1)]);
 	return n;
 }
 
@@ -146,10 +115,7 @@ char *sfrac_add(char *n1, char *n2)
 	x = sfrac_todouble(sfrac_simplify(n1));
 	y = sfrac_todouble(sfrac_simplify(n2));
 	x += y;
-	/*
-	n1=sfrac_fromdouble(x);
-	
-	*/
+	sfrac_fromdouble(x,n1);
 	sfrac_simplify(n1);
 	return n1;
 }
@@ -162,17 +128,13 @@ char *sfrac_sub(char *n1, char *n2)
 	if (x > y)
 	{
 		x -= y;
-		/*
-		n1=sfrac_fromdouble(x);
-		*/
+		sfrac_fromdouble(x, n1);
 		sfrac_simplify(n1);
 	}
 	else
 	{
 		x -= y;
-		/*
-		n1=sfrac_fromdouble(x);
-		*/
+		sfrac_fromdouble(x, n1);
 		sfrac_negate(sfrac_simplify(n1));
 	}
 
@@ -186,9 +148,7 @@ char *sfrac_mult(char *n1, char *n2)
 	x = sfrac_todouble(sfrac_simplify(n1));
 	y = sfrac_todouble(sfrac_simplify(n2));
 	x *= y;
-	/*
-	n1=sfrac_fromdouble(x);
-	*/
+	sfrac_fromdouble(x, n1);
 	sfrac_simplify(n1);
 	return n1;
 }
@@ -199,9 +159,7 @@ char *sfrac_div(char *n1, char *n2)
 	x = sfrac_todouble(sfrac_simplify(n1));
 	y = sfrac_todouble(sfrac_simplify(n2));
 	x /= y;
-	/*
-	n1=sfrac_fromdouble(x);
-	*/
+	sfrac_fromdouble(x, n1);
 	sfrac_simplify(n1);
 	return n1;
 }
