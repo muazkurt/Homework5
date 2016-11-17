@@ -65,6 +65,13 @@ char *sfrac_simplify(char *n)
 	return n;
 }
 
+
+char *sfrac_negate(char *n)
+{
+	char *m = "-";
+	return strcat(m, n);
+}
+
 char *sfrac_add(char *n1, char *n2)
 {
 	double x, y;
@@ -84,21 +91,21 @@ char *sfrac_sub(char *n1, char *n2)
 	double x, y;
 	x = sfrac_todouble(sfrac_simplify(n1));
 	y = sfrac_todouble(sfrac_simplify(n2));
-	x -= y;
-	/*
-	n1=sfrac_fromdouble(x);
-	*/
-	sfrac_simplify(n1);
+	if (x > y)
+		x -= y;
+	else
+	{
+		/*
+		n1=sfrac_fromdouble(x);
+		*/
+		sfrac_negate(sfrac_simplify(n1));
+	}
+
+
 	return n1;
 }
 
-char *sfrac_negate(char *n)
-{
-	char *m = "-";
-	if (n[0] == '-')
-		m = "+";
-	return strcat(m, n);
-}
+
 
 char *sfrac_mult(char *n1, char *n2)
 {
