@@ -96,34 +96,72 @@ char *sfrac_div(char *n1, char *n2)
 	return n1;
 }
 
+#define MaxPowerer 8
+
 char *sfrac_fromdouble(double x)
 {
 	char *n;
-	int i = 0, a, j;
-	for (a = (int)x; a > 9; a /= 10)
-	{
-		n[i++] = a % 10;
-	}
-	for (j = 0; j < i; ++j)
-	{
-		a = n[i];
-		n[i] = n[j];
-		n[j] = a;
-		--i;
-	}
+	int i = 0, pre, a, j, fortop, q;
+	n[i++] = "_";
+
+
 	a = x - (int)x;
-	a *= power(10, MaxPowerer);
+	a *= pow(10, MaxPowerer);
 	if (a == 0)
-		strcat(n, "1");
-	
+	{
+		strcat(n, "/1");
+		for (pre = (int)x; pre > 9; pre /= 10)
+		{
+			printf("%d", pre);
+			n[i++] = pre % 10;
+		}
+
+		for (j = 0; j < i; ++j)
+		{
+			pre = n[i];
+			n[i] = n[j];
+			n[j] = pre;
+			--i;
+		}
+		sfrac_simplify(x);
+	}
 	else
 	{
-		for(i=0;a % 10 == 0;i++)
+		for (i = 0; a % 10 == 0; i++)
 			a /= 10;
-	//	strcat(strcat(n, n/*("%d", a)*/), ("/10^%d", (MaxPowerer - i)));
-		
+		i = MaxPowerer - i;
+		q = pow(10, MaxPowerer);
+		for (j = 0; a % 5 == 0 && (int)x % 5 == 2 && j < i; j++)
+		{
+			a /= 5;
+			x /= 5;
+			q /= 5;
+		}
+		for (fortop = 0; a % 2 == 0 && (int)x % 2 == 0 && fortop < i; ++fortop)
+		{
+			a /= 2;
+			x /= 2;
+			q /= 2;
+		}
+		for (pre = (int)x; pre > 9; pre /= 10)
+		{
+			printf("%d", pre);
+			n[i++] = pre % 10;
+		}
+
+		for (j = 0; j < i; ++j)
+		{
+			pre = n[i];
+			n[i] = n[j];
+			n[j] = pre;
+			--i;
+		}
+		//	strcat(strcat(n, n/*("%d", a)*/), ("/10^%d", (MaxPowerer - i)));
+
 	}
-	return n;
+	strtok(n, "_");
+
+	return strtok(NULL, "_");
 }
 
 double sfrac_todouble(char *x)

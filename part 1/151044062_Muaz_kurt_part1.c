@@ -1,57 +1,29 @@
 #include <stdio.h>
 #include <string.h>	
 #include <math.h>
-#define MaxPowerer 8
 
-char *sfrac_fromdouble(double x)
+char *sfrac_simplify(char *n)
 {
-	char *n;
-	int i = 0, a, j, fortop, q;
-	n[i++] = "_";
-	
-	for (a = (int)x; a > 9; a /= 10)
-	{	
-		printf("%d", a);
-		n[i++] = a % 10;
-	}
-	
-	for (j = 0; j < i; ++j)
+	int x, y, i;
+	x = sfrac_todouble(strtok(n, "/"));
+	y = sfrac_todouble(strtok(NULL, "/"));
+	for (i = 1; i < x && i < y; ++i)
 	{
-		a = n[i];
-		n[i] = n[j];
-		n[j] = a;
-		--i;
-	}
-	a = x - (int)x;
-	a *= pow(10, MaxPowerer);
-	if (a == 0)
-		strcat(n, "1");
-
-	else
-	{
-		for (i = 0; a % 10 == 0; i++)
-			a /= 10;
-		i = MaxPowerer - i;
-		q = pow(10, MaxPowerer);
-		for (j = 0; a % 5 == 0 && (int)x % 5 == 2 && j < i; j++)
+		if (x % i == 0 && y % i == 0)
 		{
-			a /= 5;
-			x /= 5;
-			q /= 5;
+			x /= i;
+			y /= i;
 		}
-		for (fortop = 0; a % 2 == 0 && (int)x % 2 == 0 && fortop < i; ++fortop)
-		{
-			a /= 2;
-			x /= 2;
-			q /= 2;
-		}
-		//	strcat(strcat(n, n/*("%d", a)*/), ("/10^%d", (MaxPowerer - i)));
-
 	}
-	strtok(n, "_");
+	/*
 
-	return strtok(NULL, "_");
+	strcat(strcat(strcpy(n,sfrac_fromdouble(x)),'/'),sfrac_fromdouble(y))
+	*/
+
+
+	return n;//strcat(strcat(strcpy(n, x), '/'), "%d", y);
 }
+
 void main()
 {
 	double c;
