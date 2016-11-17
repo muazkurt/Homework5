@@ -1,5 +1,6 @@
 #pragma once
 #include <string.h>
+#define MaxPowerer 8
 int power(int i, int y)
 {
 	int x, total = 1;
@@ -12,8 +13,8 @@ int power(int i, int y)
 char *sfrac_simplify(char *n)
 {
 	int x, y, i;
-	x = sfrac_todouble(strtok(n, "/");
-	y = sfrac_todouble(strtok(NULL, "/");
+	x = sfrac_todouble(strtok(n, "/"));
+	y = sfrac_todouble(strtok(NULL, "/"));
 	for (i = 1; i < x && i < y; ++i)
 	{
 		if (x % i == 0 && y % i == 0)
@@ -28,7 +29,7 @@ char *sfrac_simplify(char *n)
 	*/
 	
 	
-	return strcat(strcat(strcpy(n, x), '/'), y);
+	return n;//strcat(strcat(strcpy(n, x), '/'), "%d", y);
 }
 
 char *sfrac_add(char *n1, char *n2)
@@ -64,9 +65,6 @@ char *sfrac_negate(char *n)
 	m[0] = '-';
 	if (n[0] == '-')
 		return strcpy(n, strcpy(&m[1], n));
-	m[0] = '+';
-	else
-		return strcpy(n, strcpy(&m[1], n));
 	return n;
 }
 
@@ -101,9 +99,8 @@ char *sfrac_div(char *n1, char *n2)
 char *sfrac_fromdouble(double x)
 {
 	char *n;
-	char *changer;
 	int i = 0, a, j;
-	for (a = (int)x; a > 9; a / 10)
+	for (a = (int)x; a > 9; a /= 10)
 	{
 		n[i++] = a % 10;
 	}
@@ -115,7 +112,7 @@ char *sfrac_fromdouble(double x)
 		--i;
 	}
 	a = x - (int)x;
-	a *= power(10, 8);
+	a *= power(10, MaxPowerer);
 	if (a == 0)
 		strcat(n, "1");
 	
@@ -123,7 +120,7 @@ char *sfrac_fromdouble(double x)
 	{
 		for(i=0;a % 10 == 0;i++)
 			a /= 10;
-
+	//	strcat(strcat(n, n/*("%d", a)*/), ("/10^%d", (MaxPowerer - i)));
 		
 	}
 	return n;
@@ -133,25 +130,22 @@ double sfrac_todouble(char *x)
 {
 	double upper = 0, downer = 0, i;
 
-	char* changes;
-	changes = strtok(x, "/");
-	for (i = 0; i < strlen(changes); ++i)
-		value = (value * 10) + (int)(x[i] - '0');
-	changes = strtok(NULL, "/");
-
-	if (strlen(changes) == 0)
-		return value;
-
-
-	else
+	if (strlen(x) == strlen(strtok(x, "/")))
 	{
-		for (i = 0; i < strlen(changes); ++i)
-			downer = (downer * 10) + (int)(x[i] - '0');
-		if (downer > 0)
-			return value / downer;
+		sscanf(x, "%lf", &upper);
+		return upper;
 	}
 
-	return NaN;
+	sscanf(x, "%lf", &upper);
+
+	sscanf(strtok(NULL, "/"), "%lf", &downer);
+
+	if (downer != 0)
+		return upper / downer;
+
+
+
+	return -1;
 }
 
 void sfrac_print(
