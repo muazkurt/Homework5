@@ -1,5 +1,6 @@
 #pragma once
 #include <string.h>
+#include <stdlib.h>
 #define MaxPowerer 8
 //my own functions
 int power(int i, int y)
@@ -17,7 +18,7 @@ void simplifier(int *first, int *sec)
 		lessone = *sec;
 	for (i = 2; i < lessone; ++i)
 	{
-		if (*first%i == 0 && *sec %i == 0)
+		if (*first %i == 0 && *sec %i == 0)
 		{
 			*first /= i;
 			*sec /= i;
@@ -31,10 +32,10 @@ char *vritingInsideSTR(char* str, int x)
 {
 	int i = 0, j = 0;
 	char *tutucu = "\0";
-	for (x; x > 9; x /= 10)
-		str[i++] = x % 10;
+	for (x; x > 0; x /= 10)
+		str[i++] = (x % 10) + 48;
 	str[i] = 0;
-	for (i -= 1; i > 0; --i)
+	for (i -= 1; i >= 0; --i)
 		tutucu[j++] = str[i];
 	tutucu[j] = 0;
 	return strcpy(str,tutucu);
@@ -44,28 +45,23 @@ int shotZeroes(int *x)
 {
 	int i;
 	if (*x == 0)
-		return 8;
+		return 0;
 	for (i = 0; *x % 10 == 0; ++i)
 		*x /= 10;
 	return 8 - i;
 }
 //my own functions end
 
-
+//Sorunsuz Çalýþýyor gibi
 double sfrac_todouble(char *x)
 {
-	int upper = 0, downer = 0, i;
-
+	double upper = 0, downer = 0, i;
+	sscanf(x, "%lf", &upper);
 	if (strlen(x) == strlen(strtok(x, "/")))
 	{
-		sscanf(x, "%d", &upper);
 		return upper;
 	}
-
-	sscanf(x, "%d", &upper);
-
-	sscanf(strtok(NULL, "/"), "%d", &downer);
-
+	sscanf(strtok(NULL, "/"), "%lf", &downer);
 	if (downer != 0)
 		return (upper / downer);
 
@@ -73,14 +69,17 @@ double sfrac_todouble(char *x)
 	return -1;
 }
 
+//Sorunsuz çalýþýyor gibi
 char *sfrac_fromdouble(double x, char* firstInside)
 {
 	int firstTim = (int)x,
 		i,
-		sectim = (x - (int)x)*power(10, MaxPowerer);
+		sectim = (x - (int)x)*power(10, MaxPowerer);	
+	i = shotZeroes(&sectim);
+	firstTim *= pow(10, i);
+	firstTim += sectim;
 	vritingInsideSTR(firstInside, firstTim);
-	i=shotZeroes(&sectim);
-	vritingInsideSTR(&firstInside[strlen(firstInside)], sectim);
+
 	strcat(firstInside, "/1");
 	for (i; i > 0; --i)
 		strcat(firstInside, "0");
@@ -166,16 +165,16 @@ char *sfrac_div(char *n1, char *n2)
 //dört iþlem sonu
 
 
-//
-//
-//
-//void sfrac_print(
-//	char *a1, char *n1,
-//	char *a2, char *n2,
-//	char *a3, char *n3,
-//	char *a4)
-//{
-//
-//
-//	return;
-//}
+
+
+
+void sfrac_print(
+	char *a1, char *n1,
+	char *a2, char *n2,
+	char *a3, char *n3,
+	char *a4)
+{
+	char *totalString;
+	printf("%s %s %s %s %s \n", a1, n1, a2, n2, a3, n3, a4);
+	return;
+}
