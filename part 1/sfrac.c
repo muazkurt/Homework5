@@ -7,26 +7,58 @@ void main()
 {
 	char firstOP[100] = "\0";
 	char secOP[100] = "\0";
-	char operation;
-	int i;
+	char firstTT, operation, secTT;
 	printf("First number please: ");
-	i=scanf("%s", firstOP);
-	if (i != 0)
-	{
-		printf("What is the operation you want:");
-		scanf("\n%c", &operation);
-	}
+	scanf("%s", firstOP);
+	if (firstOP[0] == '-' || firstOP[0] == '+')
+		firstTT = firstOP[0];
+	scanf("%c", &operation);
+	printf("What is the operation you want:");
+	scanf("%c", &operation);
 	switch (operation)
 	{
 	case '+':
+		scanf("%c", &operation);
 		printf("Secound number please: ");
-		scanf("\n%s", secOP);
-		printf("%s", sfrac_add(firstOP, secOP));
+		scanf("%s", secOP);
+		if (secOP[0] == '+' || secOP[0] == '-')
+			secTT == secOP[0];
+		sfrac_add(firstOP, secOP);
+		break;
+	case '-':
+		scanf("%c", &operation);
+		printf("Secound number please: ");
+		scanf("%s", secOP);
+		if (secOP[0] == '+' || secOP[0] == '-')
+			secTT == secOP[0];
+		sfrac_div(firstOP, secOP);
+		break;
+	case '*':
+		scanf("%c", &operation);
+		printf("Secound number please: ");
+		scanf("%s", secOP);
+		if (secOP[0] == '+' || secOP[0] == '-')
+			secTT == secOP[0];
+		sfrac_mult(firstOP, secOP);
+		break;
+	case '/':
+		scanf("%c", &operation);
+		printf("Secound number please: ");
+		scanf("%s", secOP);
+		if (secOP[0] == '+' || secOP[0] == '-')
+			secTT == secOP[0];
+		sfrac_sub(firstOP, secOP);
+		break;
+	case ':':
+		scanf("%c", &operation);
+		printf("Secound number please: ");
+		scanf("%s", secOP);
+		if (secOP[0] == '+' || secOP[0] == '-')
+			secTT == secOP[0];
+		sfrac_sub(firstOP, secOP);
 		break;
 	default:
 		break;
 	}
-	//printf("%f\n",sfrac_todouble(firstOP));
-	//printf("%s", sfrac_fromdouble(0.5, secOP));
 	return;
 }

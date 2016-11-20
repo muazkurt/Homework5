@@ -110,21 +110,16 @@ char *sfrac_negate(char *n)
 //dört iþlem
 char *sfrac_add(char *n1, char *n2)
 {
-	int upstairs1, upstairs2,
-		downstairs1, downstairs2;
 	double x;
-	sscanf(n1, "%d/%d", &upstairs1, &downstairs1);
-	sscanf(n1, "%d/%d", &upstairs2, &downstairs2);
-	x = (((upstairs1*downstairs2) + (upstairs2*downstairs1)) / (downstairs1*downstairs2));
-	sfrac_fromdouble(x, n1);
-	return sfrac_simplify(n1);
+	x = sfrac_todouble(n1) + sfrac_todouble(n2);
+	return sfrac_simplify(sfrac_fromdouble(x, n1));
 }
 
 char *sfrac_sub(char *n1, char *n2)
 {
 	double x, y;
-	x = sfrac_todouble(sfrac_simplify(n1));
-	y = sfrac_todouble(sfrac_simplify(n2));
+	x = sfrac_todouble(n1);
+	y = sfrac_todouble(n2);
 	if (x > y)
 	{
 		x -= y;
@@ -134,34 +129,23 @@ char *sfrac_sub(char *n1, char *n2)
 	else
 	{
 		x -= y;
-		sfrac_fromdouble(x, n1);
-		sfrac_negate(sfrac_simplify(n1));
+		return sfrac_negate(sfrac_simplify(sfrac_fromdouble(x, n1)));
 	}
-
-
-	return n1;
+	return sfrac_simplify(sfrac_fromdouble(x, n1));
 }
 
 char *sfrac_mult(char *n1, char *n2)
 {
-	double x, y;
-	x = sfrac_todouble(sfrac_simplify(n1));
-	y = sfrac_todouble(sfrac_simplify(n2));
-	x *= y;
-	sfrac_fromdouble(x, n1);
-	sfrac_simplify(n1);
-	return n1;
+	double x;
+	x = sfrac_todouble(n1) * sfrac_todouble(n2);
+	return sfrac_simplify(sfrac_fromdouble(x, n1));
 }
 
 char *sfrac_div(char *n1, char *n2)
 {
-	double x, y;
-	x = sfrac_todouble(sfrac_simplify(n1));
-	y = sfrac_todouble(sfrac_simplify(n2));
-	x /= y;
-	sfrac_fromdouble(x, n1);
-	sfrac_simplify(n1);
-	return n1;
+	double x;
+	x = sfrac_todouble(n1) / sfrac_todouble(n2);
+	return sfrac_simplify(sfrac_fromdouble(x, n1));
 }
 //dört iþlem sonu
 
