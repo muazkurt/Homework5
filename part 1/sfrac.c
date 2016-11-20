@@ -6,9 +6,10 @@
 
 void main()
 {
-	char *c ="\0" ;
+	char *c = "\0";
+	int a = 105, b = 10;
 	printf("%s\n", sfrac_fromdouble(10.5,c));
-	printf("%.2f\n", sfrac_todouble("100"));
-	sfrac_simplify(c);
+	printf("%s\n", sfrac_simplify(c));
+	printf("%.2f\n", sfrac_todouble(c));
 	return;
 }

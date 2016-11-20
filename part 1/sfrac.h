@@ -13,16 +13,20 @@ int power(int i, int y)
 
 void simplifier(int *first, int *sec)
 {
-	int i, lessone = *first;
-	if (*first > *sec)
-		lessone = *sec;
-	for (i = 2; i < lessone; ++i)
+	int i;
+	for (i = 2; i < *first && i < *sec; ++i)
 	{
-		if (*first %i == 0 && *sec %i == 0)
+		if(*first%i == 0.0 && *sec%i == 0.0)
 		{
-			*first /= i;
-			*sec /= i;
-			i -= 1;
+			printf("ilk x%4d\n", *first);
+			printf("ilk i%4d\n", i);
+			printf("ilk y%4d\n", *sec);
+			*first = *first / i;
+			*sec = *sec / i;
+			printf("x%4d\n", *first);
+			printf("i%4d\n", i);
+			printf("y%4d\n", *sec);
+			i = i - 1;
 		}
 	}
 	return;
@@ -58,14 +62,10 @@ double sfrac_todouble(char *x)
 	double upper = 0, downer = 0, i;
 	sscanf(x, "%lf", &upper);
 	if (strlen(x) == strlen(strtok(x, "/")))
-	{
 		return upper;
-	}
 	sscanf(strtok(NULL, "/"), "%lf", &downer);
 	if (downer != 0)
 		return (upper / downer);
-
-
 	return -1;
 }
 
@@ -87,14 +87,14 @@ char *sfrac_fromdouble(double x, char* firstInside)
 	return firstInside;
 }
 
+//sorunsuz çalýþýyor gibi
 char *sfrac_simplify(char *n)
 {
 	int x, y;
+	char *simplify = "\0";
 	sscanf(n, "%d/%d", &x, &y);
 	simplifier(&x, &y);
-
-	strcat(sfrac_fromdouble(x, n), "/");
-	sfrac_fromdouble(y, &n[strlen(n + 1)]);
+	strcat(strcat(vritingInsideSTR(n, x), "/"), vritingInsideSTR(simplify, y));
 	return n;
 }
 
