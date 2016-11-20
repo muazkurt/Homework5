@@ -1,8 +1,12 @@
-#pragma once
 #include <string.h>
-#include <stdlib.h>
+#include <math.h>
 #define MaxPowerer 8
 //my own functions
+
+/*
+just a power function. takes 2 int value
+and return first^sec
+*/
 int power(int i, int y)
 {
 	int x, total = 1;
@@ -18,15 +22,9 @@ void simplifier(int *first, int *sec)
 	{
 		if(*first%i == 0.0 && *sec%i == 0.0)
 		{
-			printf("ilk x%4d\n", *first);
-			printf("ilk i%4d\n", i);
-			printf("ilk y%4d\n", *sec);
-			*first = *first / i;
-			*sec = *sec / i;
-			printf("x%4d\n", *first);
-			printf("i%4d\n", i);
-			printf("y%4d\n", *sec);
-			i = i - 1;
+			*first /= i;
+			*sec /= i;
+			i -= 1;
 		}
 	}
 	return;
@@ -56,6 +54,10 @@ int shotZeroes(int *x)
 }
 //my own functions end
 
+
+
+
+
 //Sorunsuz Çalýþýyor gibi
 double sfrac_todouble(char *x)
 {
@@ -74,16 +76,14 @@ char *sfrac_fromdouble(double x, char* firstInside)
 {
 	int firstTim = (int)x,
 		i,
-		sectim = (x - (int)x)*power(10, MaxPowerer);	
+		sectim = (x - (int)x)*pow(10, MaxPowerer);
 	i = shotZeroes(&sectim);
 	firstTim *= pow(10, i);
 	firstTim += sectim;
 	vritingInsideSTR(firstInside, firstTim);
-
 	strcat(firstInside, "/1");
 	for (i; i > 0; --i)
 		strcat(firstInside, "0");
-
 	return firstInside;
 }
 
@@ -98,11 +98,11 @@ char *sfrac_simplify(char *n)
 	return n;
 }
 
-
+//sorun olacak bir durum yok ki
 char *sfrac_negate(char *n)
 {
 	char *m = "-";
-	return strcat(m, n);
+	return strcpy(n, strcat(m, n));
 }
 
 
@@ -110,13 +110,14 @@ char *sfrac_negate(char *n)
 //dört iþlem
 char *sfrac_add(char *n1, char *n2)
 {
-	double x, y;
-	x = sfrac_todouble(sfrac_simplify(n1));
-	y = sfrac_todouble(sfrac_simplify(n2));
-	x += y;
-	sfrac_fromdouble(x,n1);
-	sfrac_simplify(n1);
-	return n1;
+	int upstairs1, upstairs2,
+		downstairs1, downstairs2;
+	double x;
+	sscanf(n1, "%d/%d", &upstairs1, &downstairs1);
+	sscanf(n1, "%d/%d", &upstairs2, &downstairs2);
+	x = (((upstairs1*downstairs2) + (upstairs2*downstairs1)) / (downstairs1*downstairs2));
+	sfrac_fromdouble(x, n1);
+	return sfrac_simplify(n1);
 }
 
 char *sfrac_sub(char *n1, char *n2)
@@ -175,6 +176,6 @@ void sfrac_print(
 	char *a4)
 {
 	char *totalString;
-	printf("%s %s %s %s %s \n", a1, n1, a2, n2, a3, n3, a4);
+	printf("%s %s %s %s %s %s %s\n", a1, n1, a2, n2, a3, n3, a4);
 	return;
 }
